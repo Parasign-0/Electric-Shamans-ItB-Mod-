@@ -12,6 +12,7 @@ Radiant_Beam = Skill:new{
 	Range = 3,
 	PathSize = 3,
     Push = 1,
+	LaserArt = "effects/laser_push", --laser_fire
 	PowerCost = 0,
 	LaunchSound = "/weapons/burst_beam",
 	ImpactSound = "",
@@ -58,17 +59,8 @@ function Radiant_Beam:GetSkillEffect(p1,p2)
 			end
 
 			local spaceDamage = SpaceDamage(curr, damage, push)
-			spaceDamage.sAnimation = "Lightning_Hit"
-			if i == distance then 	
-				spaceDamage.sAnimation = "flamethrower"..distance.."_"..direction 
-			end
-			ret:AddDamage(spaceDamage)
-
-			if spaceDamage.iDamage > 0 then
-				local dummy_damage = SpaceDamage(curr, 0)
-				dummy_damage.sAnimation = "ExploAir1"
-				ret:AddDamage(dummy_damage)
-			end
+			ret:AddProjectile(spaceDamage,self.LaserArt)
+			ret:AddBounce(spaceDamage.loc,1)
 		end
 	end
 
